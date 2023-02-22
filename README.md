@@ -1,5 +1,5 @@
-# old_gunrange
-Script de base : https://github.com/Oldarorn/old_gunrange
+# esx_gunrange
+Script de base : https://github.com/Oldarorn/esx_gunrange
 Ajoutez un stand de tir à votre serveur où vous pouvez entraîner votre objectif
 
 ## Informations
@@ -16,7 +16,7 @@ Ajoutez un stand de tir à votre serveur où vous pouvez entraîner votre object
 
 ## Installation
 
-1. Installez old_gunrange dans votre dossier resources/[esx]
+1. Installez esx_gunrange dans votre dossier resources/[esx]
 2. Ajoutez la table SQL
 3. Ajoutez ceci dans votre server.cfg :
-> ensure old_gunrange
+> ensure esx_gunrange

@@ -1,5 +1,5 @@
 local scoreboard = {}
 
-RegisterServerEvent('old_gunrange:updateScoreboard')
-AddEventHandler('old_gunrange:updateScoreboard',
+RegisterServerEvent('esx_gunrange:updateScoreboard')
+AddEventHandler('esx_gunrange:updateScoreboard',
                 function(score, difficulty, targets) end)

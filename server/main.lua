@@ -36,7 +36,7 @@ function getIdentity(source, callback)
         end)
 end
 
-ESX.RegisterServerCallback('old_gunrange:canshoot', function(source, cb)
+ESX.RegisterServerCallback('esx_gunrange:canshoot', function(source, cb)
     if canStart then
         cb(true)
     else
@@ -44,14 +44,14 @@ ESX.RegisterServerCallback('old_gunrange:canshoot', function(source, cb)
     end
 end)
 
-RegisterNetEvent('old_gunrange:startShooting')
-AddEventHandler('old_gunrange:startShooting', function(wTime, targets)
+RegisterNetEvent('esx_gunrange:startShooting')
+AddEventHandler('esx_gunrange:startShooting', function(wTime, targets)
     canStart = false
     SetTimeout((wTime * targets), function() canStart = true end)
 end)
 
-RegisterNetEvent('old_gunrange:showresulttoNearbyPlayers')
-AddEventHandler('old_gunrange:showresulttoNearbyPlayers', function(difficulty_name, points, targets)
+RegisterNetEvent('esx_gunrange:showresulttoNearbyPlayers')
+AddEventHandler('esx_gunrange:showresulttoNearbyPlayers', function(difficulty_name, points, targets)
     getIdentity(source, function(data)
         if difficulty == 1 then
             difficulty_name = "Facile"
@@ -64,7 +64,7 @@ AddEventHandler('old_gunrange:showresulttoNearbyPlayers', function(difficulty_na
         elseif difficulty == 5 then
             difficulty_name = "Impossible"
         end
-      TriggerClientEvent('old_gunrange:sendresultsforplayers', -1,
+      TriggerClientEvent('esx_gunrange:sendresultsforplayers', -1,
                          data.firstname, data.lastname, difficulty_name, points,
                          targets)
       insertScore(data.identifier, data.firstname, data.lastname, difficulty_name, points, targets)
@@ -89,16 +89,16 @@ function insertScore(playerIdentifier, firstname, lastname, difficulty_name, sco
     end)
 end   
 
-RegisterNetEvent('old_gunrange:updateScoreboard')
-AddEventHandler('old_gunrange:updateScoreboard', function(difficulty_name, points, targets)
+RegisterNetEvent('esx_gunrange:updateScoreboard')
+AddEventHandler('esx_gunrange:updateScoreboard', function(difficulty_name, points, targets)
     getIdentity(source, function(data)
         local playerIdentifier = data.identifier
         insertScore(playerIdentifier, data.firstname, data.lastname, difficulty_name, points, targets)
-        TriggerClientEvent('old_gunrange:updateScoreboard', -1, scores)
+        TriggerClientEvent('esx_gunrange:updateScoreboard', -1, scores)
     end)
 end)
 
-ESX.RegisterServerCallback('old_gunrange:GetScores', function(source, cb)
+ESX.RegisterServerCallback('esx_gunrange:GetScores', function(source, cb)
     MySQL.Async.fetchAll('SELECT * FROM gunrange_scores ORDER BY score DESC', {}, function(rows)
         local scores = {}
         for i = 1, #rows, 1 do

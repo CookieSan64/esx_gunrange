@@ -40,11 +40,11 @@ Citizen.CreateThread(function(id)
                 Citizen.Wait(5000)
                 sShoot = false
                 if Config.ChatMessages == true then
-                    TriggerServerEvent('old_gunrange:showresulttoNearbyPlayers', difficulty, points, targets)
+                    TriggerServerEvent('esx_gunrange:showresulttoNearbyPlayers', difficulty, points, targets)
                 end
-                TriggerServerEvent('old_gunrange:updateScoreboard', cDif,
+                TriggerServerEvent('esx_gunrange:updateScoreboard', cDif,
                                    points, mTargets)
-                TriggerEvent('old_gunrange:stop')
+                TriggerEvent('esx_gunrange:stop')
             end
             if target ~= nil then
                 for m, n in pairs(weapons) do
@@ -146,9 +146,9 @@ function drawTxt(x, y, width, height, scale, text, r, g, b, a)
     DrawText(x - width / 2, y - height / 2 + 0.005)
 end
 
-AddEventHandler('old_gunrange:hasEnteredMarker', function(zone)
+AddEventHandler('esx_gunrange:hasEnteredMarker', function(zone)
     local player = GetPlayerPed(-1)
-    if zone == 'old_gunrange' then
+    if zone == 'esx_gunrange' then
         if sShoot ~= true then
             CurrentAction = 'start'
             CurrentActionMsg = _U('actionMessage') -- "Appuyez sur ~INPUT_PICKUP~ pour ouvrir le menu."
@@ -169,20 +169,20 @@ Citizen.CreateThread(function()
         local currentZone = nil
         if (GetDistanceBetweenCoords(coords, 821.52, -2163.37, 29.65, true) <= 2) then
             isInMarker = true
-            currentZone = 'old_gunrange'
+            currentZone = 'esx_gunrange'
         end
         if isInMarker and not hasAlreadyEnteredMarker then
             hasAlreadyEnteredMarker = true
             lastZone = currentZone
-            TriggerEvent('old_gunrange:hasEnteredMarker', currentZone)
+            TriggerEvent('esx_gunrange:hasEnteredMarker', currentZone)
         end
         if not isInMarker and hasAlreadyEnteredMarker then
             hasAlreadyEnteredMarker = false
-            TriggerEvent('old_gunrange:hasExitedMarker', lastZone)
+            TriggerEvent('esx_gunrange:hasExitedMarker', lastZone)
         end
     end
 end)
-AddEventHandler('old_gunrange:hasExitedMarker', function(zone)
+AddEventHandler('esx_gunrange:hasExitedMarker', function(zone)
     CurrentAction = nil
     showBoard = false
 end)
@@ -196,7 +196,7 @@ Citizen.CreateThread(function()
             DisplayHelpTextFromStringLabel(0, 0, 1, -1)
             if IsControlPressed(0, 86) and (GetGameTimer() - GUI.Time) > 150 then
                 if CurrentAction == 'start' then
-                    ESX.TriggerServerCallback('old_gunrange:canshoot',
+                    ESX.TriggerServerCallback('esx_gunrange:canshoot',
                                                function(approved)
                         if approved then
                             openDifficultyMenu()
@@ -224,7 +224,7 @@ function openDifficultyMenu()
         {label = _U('impossible'), time = 500}
     }
     ESX.UI.Menu.Open('default', GetCurrentResourceName(),
-                     'old_gunrange_difficulty', {
+                     'esx_gunrange_difficulty', {
         title = _U('difficulty'),
         align = 'top-right',
         elements = elements
@@ -245,18 +245,18 @@ function openDifficultyMenu()
             mTargets = data2.current.targets
             sShoot = true
             spwnT = true
-            TriggerServerEvent('old_gunrange:startShooting', wTime, mTargets)
+            TriggerServerEvent('esx_gunrange:startShooting', wTime, mTargets)
             ESX.UI.Menu.CloseAll()
         end, function(data2, menu2) menu2.close() end)
     end, function(data, menu) ESX.UI.Menu.CloseAll() end)
 end
 
-RegisterNetEvent('old_gunrange:sendresultsforplayers')
-AddEventHandler('old_gunrange:sendresultsforplayers',
+RegisterNetEvent('esx_gunrange:sendresultsforplayers')
+AddEventHandler('esx_gunrange:sendresultsforplayers',
                 function(fname, lname, dif, points, t)
     local coords = GetEntityCoords(GetPlayerPed(-1))
     if (GetDistanceBetweenCoords(coords, 821.52, -2163.37, 29.65, true) < 20.0) then
-        TriggerEvent('chatMessage', "^4" .. _U('old_gunrange'), {0, 153, 204},
+        TriggerEvent('chatMessage', "^4" .. _U('esx_gunrange'), {0, 153, 204},
                      "^2 " .. '\n' .. fname .. ' ' .. lname .. '\n' ..
                          _U('points') .. points .. '\n' .. _U('difficulty') ..
                          dif .. '\n' .. _U('targets') .. t)
@@ -278,7 +278,7 @@ function DrawText3D(x, y, z, text)
 end
 
 function showSBoard()
-    ESX.TriggerServerCallback('old_gunrange:GetScores', function(s)
+    ESX.TriggerServerCallback('esx_gunrange:GetScores', function(s)
         scores = s
         showBoard = true
         Citizen.CreateThread(function()
